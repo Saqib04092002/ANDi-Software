@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+{% block title %}Admin Profile - ANDi Banking{% endblock %}
+{% block content %}
+<div class="container-fluid">
+    <h1 class="h3 mb-4 text-dark"><i class="fas fa-user-circle me-2"></i>Admin Profile</h1>
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 fw-bold text-dark">Profile Information</h6>
+                </div>
+                <div class="card-body">
+                    <form action="{{ url_for('profile') }}" method="POST">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="name" name="name" value="{{ data.user.name }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" id="email" name="email" value="{{ data.user.email }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="profileImage" class="form-label">Profile Image</label>
+                            <input class="form-control" type="file" id="profileImage">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update Profile</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card shadow mb-4">
+                 <div class="card-header py-3">
+                    <h6 class="m-0 fw-bold text-dark">Profile Picture</h6>
+                </div>
+                <div class="card-body text-center">
+                    <img src="{{ data.user.avatar_url }}" class="img-fluid rounded-circle" alt="Admin Avatar" style="width: 150px; height: 150px;">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

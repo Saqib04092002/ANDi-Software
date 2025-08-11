@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block title %}SMS API Settings - ANDi Banking{% endblock %}
+{% block content %}
+<div class="container-fluid">
+    <h1 class="h3 mb-4 text-dark"><i class="fas fa-sms me-2"></i>Sms Api Settings</h1>
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <div class="card shadow mb-4">
+        <div class="card-header py-3"><h6 class="m-0 fw-bold text-dark">Short Code</h6></div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <thead><tr><th>#</th><th>Code</th><th>Description</th></tr></thead>
+                <tbody>
+                    <tr><td>1</td><td>[[message]]</td><td>Details Text Form Script</td></tr>
+                    <tr><td>2</td><td>[[number]]</td><td>User name, Will Pull Form Database and Use in EMAIL text</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <form action="{{ url_for('settings_sms') }}" method="POST">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Sms Api</label>
+                    <input type="text" class="form-control" name="sms_api" value="{{ data.settings.sms.api_url }}">
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Update</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

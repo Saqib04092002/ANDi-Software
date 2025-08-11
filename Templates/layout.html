@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ANDi Banking Dashboard{% endblock %}</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-accent: #6a11cb;
+            --secondary-accent: #2575fc;
+            --sidebar-bg: #1e2125;
+            --main-bg: #121417;
+            --card-bg: #2a2d32;
+            --text-color: #e0e0e0;
+            --text-muted-color: #a0a0a0;
+            --border-color: rgba(255, 255, 255, 0.1);
+        }
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background-color: var(--main-bg);
+            color: var(--text-color);
+        }
+        .sidebar { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            bottom: 0; 
+            width: 260px; 
+            z-index: 100; 
+            background-color: var(--sidebar-bg); 
+            transition: left 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid var(--border-color);
+        }
+        .main-content { 
+            margin-left: 260px; 
+            transition: margin-left 0.3s ease-in-out;
+        }
+        .sidebar .nav-link { font-weight: 500; color: var(--text-muted-color); padding: 12px 24px; display: flex; align-items: center; border-radius: 8px; margin: 2px 0; }
+        .sidebar .nav-link .fa-fw { width: 1.5em; margin-right: 0.5em; }
+        .sidebar .nav-link:hover { color: #fff; background-color: rgba(255, 255, 255, 0.05); }
+        .sidebar .nav-link.active { color: #fff; background: linear-gradient(90deg, var(--primary-accent), var(--secondary-accent)); }
+        .sidebar-brand { color: #fff; font-weight: 700; font-size: 1.2rem; padding: 1rem 1.5rem; text-align: center; }
+        .navbar-top { 
+            z-index: 99; 
+            margin-left: 260px; 
+            background: linear-gradient(90deg, var(--primary-accent), var(--secondary-accent)); 
+            color: #fff;
+            transition: margin-left 0.3s ease-in-out;
+        }
+        .navbar-top .navbar-brand { color: #fff; font-weight: 600; }
+        .navbar-top .dropdown-toggle::after { display: none; }
+        .sidebar .nav-item .collapse .nav-link { padding-left: 3rem; font-size: 0.9em; }
+        .sidebar .nav-item .collapse .nav-link.active { background-color: rgba(0,0,0,0.2); }
+        
+        .sidebar-nav {
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+        .sidebar-nav::-webkit-scrollbar { width: 6px; }
+        .sidebar-nav::-webkit-scrollbar-track { background: var(--sidebar-bg); }
+        .sidebar-nav::-webkit-scrollbar-thumb { background-color: #555; border-radius: 3px; }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+        }
+        .card-header {
+            background-color: rgba(0,0,0,0.2);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .text-dark { color: var(--text-color) !important; }
+        .h1, .h3 { color: #fff !important; }
+
+        body.sidebar-toggled .sidebar { left: -260px; }
+        body.sidebar-toggled .main-content,
+        body.sidebar-toggled .navbar-top { margin-left: 0; }
+    </style>
+</head>
+<body>
+    <div class="d-flex">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <!-- Static Header Part -->
+            <div>
+                <a href="/" class="sidebar-brand d-flex align-items-center justify-content-center text-decoration-none">
+                    <span class="fs-5">admin</span>
+                </a>
+                <hr class="text-secondary">
+            </div>
+
+            <!-- Scrollable Nav Part -->
+            <div class="sidebar-nav px-2">
+                <ul class="nav nav-pills flex-column mb-auto">
+                    <li class="nav-item"><a href="/" class="nav-link main-link {{ 'active' if request.path == '/' else '' }}"><i class="fas fa-tachometer-alt fa-fw"></i> Dashboard</a></li>
+                    <li class="nav-item"><a href="/branch" class="nav-link main-link {{ 'active' if 'branch' in request.path else '' }}"><i class="fas fa-code-branch fa-fw"></i> Branch</a></li>
+                    <li class="nav-item"><a href="/other_banks" class="nav-link main-link {{ 'active' if 'other_banks' in request.path else '' }}"><i class="fas fa-landmark fa-fw"></i> Other banks</a></li>
+
+                    <!-- Deposit Dropdown -->
+                    <li class="nav-item">
+                        <a class="nav-link main-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#depositSubmenu" role="button" aria-expanded="{{ 'true' if 'payment_gateway' in request.path else 'false' }}" aria-controls="depositSubmenu">
+                            <span><i class="fas fa-money-check-alt fa-fw"></i> Deposit</span>
+                            <i class="fas fa-chevron-down fa-xs"></i>
+                        </a>
+                        <div class="collapse {{ 'show' if 'payment_gateway' in request.path else '' }}" id="depositSubmenu">
+                            <ul class="nav flex-column ms-1">
+                                <li><a class="nav-link" href="#">$ Deposits</a></li>
+                                <li><a class="nav-link {{ 'active' if 'payment_gateway' in request.path else '' }}" href="{{ url_for('payment_gateway') }}">Payment Gateway</a></li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <!-- Latest News Dropdown -->
+                    <li class="nav-item">
+                        <a class="nav-link main-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#newsSubmenu" role="button" aria-expanded="{{ 'true' if 'latest_news' in request.path or 'add_news' in request.path else 'false' }}" aria-controls="newsSubmenu">
+                            <span><i class="far fa-newspaper fa-fw"></i> Latest News</span>
+                            <i class="fas fa-chevron-down fa-xs"></i>
+                        </a>
+                        <div class="collapse {{ 'show' if 'latest_news' in request.path or 'add_news' in request.path else '' }}" id="newsSubmenu">
+                            <ul class="nav flex-column ms-1">
+                                <li><a class="nav-link {{ 'active' if 'add_news' in request.path else '' }}" href="{{ url_for('add_news') }}">+ Add new</a></li>
+                                <li><a class="nav-link {{ 'active' if 'latest_news' in request.path else '' }}" href="{{ url_for('latest_news') }}">View all</a></li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <!-- Transaction Dropdown -->
+                     <li class="nav-item">
+                        <a class="nav-link main-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#transactionSubmenu" role="button" aria-expanded="{{ 'true' if 'transactions' in request.path else 'false' }}" aria-controls="transactionSubmenu">
+                            <span><i class="fas fa-exchange-alt fa-fw"></i> Transaction</span>
+                            <i class="fas fa-chevron-down fa-xs"></i>
+                        </a>
+                        <div class="collapse {{ 'show' if 'transactions' in request.path else '' }}" id="transactionSubmenu">
+                            <ul class="nav flex-column ms-1">
+                                <li><a class="nav-link {{ 'active' if 'transactions/request' in request.path else '' }}" href="{{ url_for('transactions_request') }}">Bank transaction request</a></li>
+                                <li><a class="nav-link {{ 'active' if 'transactions/approved' in request.path else '' }}" href="{{ url_for('transactions_approved') }}">Bank transaction Approved</a></li>
+                                <li><a class="nav-link {{ 'active' if 'transactions/rejected' in request.path else '' }}" href="{{ url_for('transactions_rejected') }}">Bank transaction Rejected</a></li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <!-- Withdraw Dropdown -->
+                    <li class="nav-item">
+                        <a class="nav-link main-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#withdrawSubmenu" role="button" aria-expanded="{{ 'true' if 'withdraw' in request.path else 'false' }}" aria-controls="withdrawSubmenu">
+                            <span><i class="fas fa-wallet fa-fw"></i> withdraw</span>
+                            <i class="fas fa-chevron-down fa-xs"></i>
+                        </a>
+                        <div class="collapse {{ 'show' if 'withdraw' in request.path else '' }}" id="withdrawSubmenu">
+                            <ul class="nav flex-column ms-1">
+                                <li><a class="nav-link {{ 'active' if 'withdraw/request' in request.path else '' }}" href="{{ url_for('withdraw_request') }}">Withdraw request</a></li>
+                                <li><a class="nav-link {{ 'active' if 'withdraw/approved' in request.path else '' }}" href="{{ url_for('withdraw_approved') }}">Approved Withdraw</a></li>
+                                <li><a class="nav-link {{ 'active' if 'withdraw/rejected' in request.path else '' }}" href="{{ url_for('withdraw_rejected') }}">Rejected Withdraw</a></li>
+                                <li><a class="nav-link {{ 'active' if 'withdraw/methods' in request.path else '' }}" href="{{ url_for('withdraw_methods') }}">Withdraw Method</a></li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <!-- User Management Dropdown -->
+                    <li class="nav-item">
+                        <a class="nav-link main-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#userSubmenu" role="button" aria-expanded="{{ 'true' if 'users' in request.path else 'false' }}" aria-controls="userSubmenu">
+                            <span><i class="fas fa-users-cog fa-fw"></i> User Management</span>
+                            <i class="fas fa-chevron-down fa-xs"></i>
+                        </a>
+                        <div class="collapse {{ 'show' if 'users' in request.path else '' }}" id="userSubmenu">
+                            <ul class="nav flex-column ms-1">
+                                <li><a class="nav-link {{ 'active' if 'users/all' in request.path else '' }}" href="{{ url_for('users_all') }}">All User</a></li>
+                                <li><a class="nav-link {{ 'active' if 'users/verified' in request.path else '' }}" href="{{ url_for('users_verified') }}">Verified Users</a></li>
+                                <li><a class="nav-link {{ 'active' if 'users/banned' in request.path else '' }}" href="{{ url_for('users_banned') }}">Banned Users</a></li>
+                                <li><a class="nav-link {{ 'active' if 'users/mobile_unverified' in request.path else '' }}" href="{{ url_for('users_mobile_unverified') }}">Mobile Unverified</a></li>
+                                <li><a class="nav-link {{ 'active' if 'users/email_unverified' in request.path else '' }}" href="{{ url_for('users_email_unverified') }}">Email Unverified</a></li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <!-- Settings Dropdown -->
+                    <li class="nav-item">
+                        <a class="nav-link main-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#settingsSubmenu" role="button" aria-expanded="{{ 'true' if 'settings' in request.path else 'false' }}" aria-controls="settingsSubmenu">
+                            <span><i class="fas fa-cogs fa-fw"></i> Settings</span>
+                            <i class="fas fa-chevron-down fa-xs"></i>
+                        </a>
+                        <div class="collapse {{ 'show' if 'settings' in request.path else '' }}" id="settingsSubmenu">
+                            <ul class="nav flex-column ms-1">
+                                <li><a class="nav-link {{ 'active' if 'settings/general' in request.path else '' }}" href="{{ url_for('settings_general') }}">General Settings</a></li>
+                                <li><a class="nav-link {{ 'active' if 'settings/charge' in request.path else '' }}" href="{{ url_for('settings_charge') }}">Charge Settings</a></li>
+                                <li><a class="nav-link {{ 'active' if 'settings/email' in request.path else '' }}" href="{{ url_for('settings_email') }}">Email Settings</a></li>
+                                <li><a class="nav-link {{ 'active' if 'settings/sms' in request.path else '' }}" href="{{ url_for('settings_sms') }}">Sms api Settings</a></li>
+                                <li><a class="nav-link {{ 'active' if 'settings/facebook' in request.path else '' }}" href="{{ url_for('settings_facebook') }}">Facebook api</a></li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="nav-item"><a href="/interface_control" class="nav-link main-link {{ 'active' if 'interface_control' in request.path else '' }}"><i class="fas fa-sliders-h fa-fw"></i> Interface Control</a></li>
+                    <li class="nav-item"><a href="/newsletter" class="nav-link main-link {{ 'active' if 'newsletter' in request.path else '' }}"><i class="fas fa-envelope-open-text fa-fw"></i> Newsletter</a></li>
+                    <li class="nav-item"><a href="/advertisement" class="nav-link main-link {{ 'active' if 'advertisement' in request.path else '' }}"><i class="fas fa-ad fa-fw"></i> Advertisement</a></li>
+                </ul>
+            </div>
+             <!-- Static Footer Part -->
+            <div>
+                <hr class="text-secondary">
+                <ul class="nav nav-pills flex-column mb-auto px-2">
+                    <li class="nav-item">
+                        <a href="{{ url_for('logout') }}" class="nav-link main-link">
+                            <i class="fas fa-sign-out-alt fa-fw"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!-- End Sidebar -->
+
+        <!-- Main Content Wrapper -->
+        <div class="main-content flex-grow-1">
+            <!-- Top Navigation Bar -->
+            <nav class="navbar navbar-expand-lg sticky-top navbar-top py-2">
+                <div class="container-fluid">
+                    <div class="d-flex align-items-center">
+                        <button class="btn btn-link text-white fs-4 me-2" id="sidebarToggle"><i class="fas fa-bars"></i></button>
+                        <a class="navbar-brand" href="#">ANDi Banking</a>
+                    </div>
+                    <div class="ms-auto">
+                        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user"></i></a>
+                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end text-small shadow" aria-labelledby="dropdownUser">
+                            <li><a class="dropdown-item" href="{{ url_for('profile') }}"><i class="fas fa-user-circle me-2"></i>Profile</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('change_password') }}"><i class="fas fa-key me-2"></i>Change password</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <!-- End Top Bar -->
+
+            <!-- Page Content -->
+            <main class="p-4">
+                {% block content %}{% endblock %}
+            </main>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('sidebarToggle').addEventListener('click', function() {
+            document.body.classList.toggle('sidebar-toggled');
+        });
+    </script>
+</body>
+</html>

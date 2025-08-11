@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+
+{% block title %}Other Banks - ANDi Banking{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 text-dark">Other Banks</h1>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addBankModal">
+            <i class="fas fa-plus me-2"></i>Add New Bank
+        </button>
+    </div>
+
+    <!-- Other Banks Cards -->
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="row">
+                {% for bank in data.other_banks %}
+                <div class="col-xl-4 col-md-6 mb-4">
+                    <div class="card h-100" style="background-color: #343a40; color: white;">
+                        <div class="card-header text-center fw-bold">{{ bank.name }}</div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">Status</label>
+                                <select class="form-select">
+                                    <option {% if bank.status == 'Active' %}selected{% endif %}>Active</option>
+                                    <option {% if bank.status == 'Inactive' %}selected{% endif %}>Inactive</option>
+                                </select>
+                            </div>
+                            <button class="btn w-100" style="background-color: #17a2b8; color: white;"><i class="fas fa-info-circle me-2"></i>DETAILS</button>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-success w-100">Update</button>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="col-12">
+                    <p class="text-center">No other banks found.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add New Bank Modal -->
+<div class="modal fade" id="addBankModal" tabindex="-1" aria-labelledby="addBankModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addBankModalLabel">Add New Bank</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="{{ url_for('other_banks') }}" method="POST">
+          <div class="modal-body">
+              <div class="mb-3">
+                  <label for="bank_name" class="form-label">Bank Name</label>
+                  <input type="text" class="form-control" id="bank_name" name="bank_name" placeholder="Enter bank name" required>
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Add Bank</button>
+          </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+
+{% block title %}Add News - ANDi Banking{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 text-dark"><i class="fas fa-plus-circle me-2"></i>Add New Blog Post</h1>
+        <a href="{{ url_for('latest_news') }}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Back to All News
+        </a>
+    </div>
+
+    <!-- Add News Form -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 fw-bold text-dark">Blog Details</h6>
+        </div>
+        <div class="card-body">
+            <form action="{{ url_for('add_news') }}" method="POST">
+                <div class="mb-3">
+                    <label for="title" class="form-label">Title</label>
+                    <input type="text" class="form-control" id="title" name="title" required>
+                </div>
+                <div class="mb-3">
+                    <label for="author" class="form-label">Author</label>
+                    <input type="text" class="form-control" id="author" name="author" required>
+                </div>
+                <div class="mb-3">
+                  <label for="details" class="form-label">Details</label>
+                  <textarea class="form-control" id="details" name="details" rows="5" placeholder="Write your blog content here..."></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="status" class="form-label">Status</label>
+                    <select class="form-select" id="status" name="status">
+                        <option value="1" selected>Active</option>
+                        <option value="0">Inactive</option>
+                    </select>
+                </div>
+                <hr>
+                <button type="submit" class="btn btn-primary">Publish Post</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

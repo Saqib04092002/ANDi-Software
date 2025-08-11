@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+{% block title %}Email Settings - ANDi Banking{% endblock %}
+{% block content %}
+<div class="container-fluid">
+    <h1 class="h3 mb-4 text-dark"><i class="fas fa-envelope-open-text me-2"></i>Email Settings</h1>
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <div class="card shadow mb-4">
+        <div class="card-header py-3"><h6 class="m-0 fw-bold text-dark">Short Code</h6></div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <thead><tr><th>#</th><th>Code</th><th>Description</th></tr></thead>
+                <tbody>
+                    <tr><td>1</td><td>[[message]]</td><td>Details Text Form Script</td></tr>
+                    <tr><td>2</td><td>[[name]]</td><td>User name, Will Pull Form Database and Use in EMAIL text</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <form action="{{ url_for('settings_email') }}" method="POST">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Email Form</label>
+                    <input type="email" class="form-control" name="email_from" value="{{ data.settings.email.from }}">
+                    <div class="form-text">We'll never share your email with anyone else.</div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Email Body</label>
+                    <textarea class="form-control" name="email_body" rows="10">{{ data.settings.email.body }}</textarea>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Update</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

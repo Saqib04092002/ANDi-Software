@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block title %}Facebook API Settings - ANDi Banking{% endblock %}
+{% block content %}
+<div class="container-fluid">
+    <h1 class="h3 mb-4 text-dark"><i class="fab fa-facebook me-2"></i>Facebook Api Settings</h1>
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <form>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Facebook app id</label>
+                    <input type="text" class="form-control" value="{{ data.settings.facebook.app_id }}">
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Update</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

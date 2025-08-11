@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+
+{% block title %}Payment Gateways - ANDi Banking{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 text-dark">PAYMENT GATEWAY</h1>
+    </div>
+
+    <!-- Payment Gateway Cards -->
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="row">
+                {% for gateway in data.payment_gateways %}
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card h-100" style="background-color: #343a40; color: white;">
+                        <div class="card-header text-center fw-bold">{{ gateway.name }}</div>
+                        <div class="card-body text-center">
+                            <div class="p-3 mb-2 bg-light rounded d-flex align-items-center justify-content-center" style="height: 120px;">
+                                <img src="{{ gateway.logo }}" alt="{{ gateway.name }} Logo" class="img-fluid" style="max-height: 80px; object-fit: contain;">
+                            </div>
+                            <button class="btn btn-sm btn-success mb-3">Change Logo</button>
+                            
+                            <div class="mb-3 text-start">
+                                <label class="form-label">Status</label>
+                                <select class="form-select">
+                                    <option {% if gateway.status == 'Active' %}selected{% endif %}>Active</option>
+                                    <option {% if gateway.status == 'Inactive' %}selected{% endif %}>Inactive</option>
+                                </select>
+                            </div>
+                            <button class="btn w-100" style="background-color: #17a2b8; color: white;"><i class="fas fa-info-circle me-2"></i>DETAILS</button>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-success w-100">Update</button>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="col-12">
+                    <p class="text-center">No payment gateways found.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

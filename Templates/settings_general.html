@@ -1,0 +1,77 @@
+{% extends "layout.html" %}
+{% block title %}General Settings - ANDi Banking{% endblock %}
+{% block content %}
+<div class="container-fluid">
+    <h1 class="h3 mb-4 text-dark"><i class="fas fa-cogs me-2"></i>General Settings</h1>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <form action="{{ url_for('settings_general') }}" method="POST">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label text-uppercase small fw-bold">Website Title</label>
+                        <input type="text" class="form-control" name="website_title" value="{{ data.settings.general.website_title }}">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label text-uppercase small fw-bold">Website Color</label>
+                        <input type="color" class="form-control form-control-color" name="website_color" value="{{ data.settings.general.website_color }}">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label text-uppercase small fw-bold">Base Currency</label>
+                        <input type="text" class="form-control" name="base_currency" value="{{ data.settings.general.base_currency }}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label text-uppercase small fw-bold">Currency Symbol</label>
+                        <input type="text" class="form-control" name="currency_symbol" value="{{ data.settings.general.currency_symbol }}">
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label text-uppercase small fw-bold">Registration</label>
+                        <div class="form-check form-switch"><input class="form-check-input" type="checkbox" name="registration" {% if data.settings.general.registration %}checked{% endif %}></div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label text-uppercase small fw-bold">Email Notification</label>
+                        <div class="form-check form-switch"><input class="form-check-input" type="checkbox" name="email_notification" {% if data.settings.general.email_notification %}checked{% endif %}></div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label text-uppercase small fw-bold">Sms Notification</label>
+                        <div class="form-check form-switch"><input class="form-check-input" type="checkbox" name="sms_notification" {% if data.settings.general.sms_notification %}checked{% endif %}></div>
+                    </div>
+                </div>
+                 <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label text-uppercase small fw-bold">Email Verification</label>
+                        <div class="form-check form-switch"><input class="form-check-input" type="checkbox" name="email_verification" {% if data.settings.general.email_verification %}checked{% endif %}></div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label text-uppercase small fw-bold">Sms Verification</label>
+                        <div class="form-check form-switch"><input class="form-check-input" type="checkbox" name="sms_verification" {% if data.settings.general.sms_verification %}checked{% endif %}></div>
+                    </div>
+                </div>
+                <hr>
+                <div class="mb-3">
+                    <label class="form-label text-uppercase small fw-bold">Branding</label>
+                    <input type="text" class="form-control" name="branding" value="{{ data.settings.general.branding }}">
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Update</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

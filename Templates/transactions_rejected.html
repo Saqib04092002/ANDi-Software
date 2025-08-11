@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+
+{% block title %}Rejected Transactions - ANDi Banking{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="h3 mb-4 text-dark">Rejected Bank Transactions</h1>
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover" width="100%" cellspacing="0">
+                    <thead>
+                        <tr class="table-light">
+                            <th>Username</th>
+                            <th>Amount</th>
+                            <th>Charge</th>
+                            <th>Account</th>
+                            <th>Request at</th>
+                            <th>Reject at</th>
+                            <th>Processing Time</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for trx in data.transactions.rejected %}
+                        <tr>
+                            <td>{{ trx.username }}</td>
+                            <td>${{ "%.2f"|format(trx.amount) }}</td>
+                            <td>${{ "%.2f"|format(trx.charge) }}</td>
+                            <td>{{ trx.account }}</td>
+                            <td>{{ trx.request_at }}</td>
+                            <td>{{ trx.reject_at }}</td>
+                            <td>{{ trx.processing_time }}</td>
+                            <td><span class="badge bg-danger">{{ trx.status }}</span></td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="8" class="text-center p-5"><h4 class="text-muted">No Data Available</h4></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

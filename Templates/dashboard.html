@@ -1,0 +1,216 @@
+{% extends "layout.html" %}
+
+{% block title %}Dashboard - ANDi Banking{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <h1 class="h3 mb-4 text-dark">Admin Dashboard</h1>
+
+    <!-- User Statistics -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 fw-bold text-dark"><i class="fas fa-users me-2"></i>Users Statistics</h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <!-- Total Users Card -->
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card text-white h-100" style="background-color: #17a2b8;">
+                        <div class="card-body d-flex justify-content-between align-items-center">
+                            <div class="me-3">
+                                <div class="text-white-75 small">TOTAL USERS</div>
+                                <div class="fs-5 fw-bold">{{ data.stats.total_users|int }}</div>
+                            </div>
+                            <i class="fas fa-users fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Total Banned Users Card -->
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card bg-danger text-white h-100">
+                        <div class="card-body d-flex justify-content-between align-items-center">
+                            <div class="me-3">
+                                <div class="text-white-75 small">TOTAL BANNED USERS</div>
+                                <div class="fs-5 fw-bold">{{ data.stats.banned_users|int }}</div>
+                            </div>
+                            <i class="fas fa-user-slash fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Total Email Unverified Card -->
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card text-white h-100" style="background-color: #007bff;">
+                        <div class="card-body d-flex justify-content-between align-items-center">
+                            <div class="me-3">
+                                <div class="text-white-75 small">TOTAL EMAIL UNVERIFIED</div>
+                                <div class="fs-5 fw-bold">{{ data.stats.email_unverified|int }}</div>
+                            </div>
+                            <i class="fas fa-envelope fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Total Phone Unverified Card -->
+                <div class="col-xl-3 col-md-6 mb-4">
+                     <div class="card text-white h-100" style="background-color: #17a2b8;">
+                        <div class="card-body d-flex justify-content-between align-items-center">
+                            <div class="me-3">
+                                <div class="text-white-75 small">TOTAL PHONE UNVERIFIED</div>
+                                <div class="fs-5 fw-bold">{{ data.stats.phone_unverified|int }}</div>
+                            </div>
+                            <i class="fas fa-mobile-alt fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Users Finance Statistics -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 fw-bold text-dark"><i class="fas fa-chart-pie me-2"></i>Users Finance Statistics</h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <!-- All Users Deposit Wallet Balance -->
+                <div class="col-xl-6 col-md-6 mb-4">
+                    <div class="card bg-primary text-white h-100">
+                        <div class="card-body d-flex justify-content-between align-items-center">
+                            <div class="me-3">
+                                <div class="text-white-75 small">ALL USERS DEPOSIT WALLET BALANCE</div>
+                                <div class="fs-5 fw-bold">{{ data.settings.general.currency_symbol }}{{ "{:,.2f}".format(data.financials.deposit_balance) }}</div>
+                            </div>
+                            <i class="fas fa-wallet fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- All Users Interest Wallet Balance -->
+                <div class="col-xl-6 col-md-6 mb-4">
+                    <div class="card bg-success text-white h-100">
+                        <div class="card-body d-flex justify-content-between align-items-center">
+                            <div class="me-3">
+                                <div class="text-white-75 small">ALL USERS INTEREST WALLET BALANCE</div>
+                                <div class="fs-5 fw-bold">{{ data.settings.general.currency_symbol }}{{ "{:,.2f}".format(data.financials.interest_balance) }}</div>
+                            </div>
+                            <i class="fas fa-landmark fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Deposit Statistics -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 fw-bold text-dark"><i class="fas fa-money-check-alt me-2"></i>Deposit Statistics</h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <!-- Total Number of Deposits -->
+                <div class="col-xl-4 col-md-6 mb-4">
+                    <div class="card text-white h-100" style="background-color: #17a2b8;">
+                        <div class="card-body d-flex justify-content-between align-items-center">
+                            <div class="me-3">
+                                <div class="text-white-75 small">TOTAL NUMBER OF DEPOSITS</div>
+                                <div class="fs-5 fw-bold">{{ data.deposits.total_number|int }}</div>
+                            </div>
+                            <i class="fas fa-list-ol fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Total Deposits Amount -->
+                <div class="col-xl-4 col-md-6 mb-4">
+                    <div class="card text-white h-100" style="background-color: #212529;">
+                        <div class="card-body d-flex justify-content-between align-items-center">
+                            <div class="me-3">
+                                <div class="text-white-75 small">TOTAL DEPOSITS AMOUNT</div>
+                                <div class="fs-5 fw-bold">{{ data.settings.general.currency_symbol }}{{ "{:,.2f}".format(data.deposits.total_amount) }}</div>
+                            </div>
+                            <i class="fas fa-funnel-dollar fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Total Deposits Charge -->
+                <div class="col-xl-4 col-md-6 mb-4">
+                    <div class="card text-white h-100" style="background-color: #28a745;">
+                        <div class="card-body d-flex justify-content-between align-items-center">
+                            <div class="me-3">
+                                <div class="text-white-75 small">TOTAL DEPOSITS CHARGE</div>
+                                <div class="fs-5 fw-bold">{{ data.settings.general.currency_symbol }}{{ "{:,.2f}".format(data.deposits.total_charge) }}</div>
+                            </div>
+                            <i class="fas fa-file-invoice-dollar fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Other Bank Transaction Statistics -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 fw-bold text-dark"><i class="fas fa-random me-2"></i>Other Bank Transaction Statistics</h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-xl-4 col-md-6 mb-4">
+                    <div class="card text-white h-100" style="background-color: #17a2b8;"><div class="card-body d-flex justify-content-between align-items-center"><div class="me-3"><div class="text-white-75 small">TOTAL NUMBER OF TRANSACTION</div><div class="fs-5 fw-bold">{{ data.other_bank_transactions.total|int }}</div></div><i class="fas fa-exchange-alt fa-2x"></i></div></div>
+                </div>
+                <div class="col-xl-4 col-md-6 mb-4">
+                    <div class="card text-white h-100" style="background-color: #28a745;"><div class="card-body d-flex justify-content-between align-items-center"><div class="me-3"><div class="text-white-75 small">TOTAL NUMBER OF APPROVED TRANSACTION</div><div class="fs-5 fw-bold">{{ data.other_bank_transactions.approved|int }}</div></div><i class="fas fa-check-circle fa-2x"></i></div></div>
+                </div>
+                <div class="col-xl-4 col-md-6 mb-4">
+                    <div class="card text-white h-100" style="background-color: #dc3545;"><div class="card-body d-flex justify-content-between align-items-center"><div class="me-3"><div class="text-white-75 small">TOTAL NUMBER OF REJECTED TRANSACTION</div><div class="fs-5 fw-bold">{{ data.other_bank_transactions.rejected|int }}</div></div><i class="fas fa-times-circle fa-2x"></i></div></div>
+                </div>
+                <div class="col-xl-4 col-md-6 mb-4">
+                    <div class="card text-white h-100" style="background-color: #17a2b8;"><div class="card-body d-flex justify-content-between align-items-center"><div class="me-3"><div class="text-white-75 small">TOTAL NUMBER OF PENDING TRANSACTION</div><div class="fs-5 fw-bold">{{ data.other_bank_transactions.pending|int }}</div></div><i class="fas fa-spinner fa-2x"></i></div></div>
+                </div>
+                <div class="col-xl-4 col-md-6 mb-4">
+                    <div class="card text-white h-100" style="background-color: #212529;"><div class="card-body d-flex justify-content-between align-items-center"><div class="me-3"><div class="text-white-75 small">TOTAL TRANSACTION AMOUNT</div><div class="fs-5 fw-bold">{{ data.settings.general.currency_symbol }}{{ "{:,.2f}".format(data.other_bank_transactions.amount) }}</div></div><i class="fas fa-calculator fa-2x"></i></div></div>
+                </div>
+                <div class="col-xl-4 col-md-6 mb-4">
+                    <div class="card text-white h-100" style="background-color: #28a745;"><div class="card-body d-flex justify-content-between align-items-center"><div class="me-3"><div class="text-white-75 small">TOTAL TRANSACTION CHARGE</div><div class="fs-5 fw-bold">{{ data.settings.general.currency_symbol }}{{ "{:,.2f}".format(data.other_bank_transactions.charge) }}</div></div><i class="fas fa-dollar-sign fa-2x"></i></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Withdraw Statistics -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 fw-bold text-dark"><i class="fas fa-hand-holding-usd me-2"></i>Withdraw Statistics</h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-xl-4 col-md-6 mb-4">
+                    <div class="card text-white h-100" style="background-color: #17a2b8;"><div class="card-body d-flex justify-content-between align-items-center"><div class="me-3"><div class="text-white-75 small">TOTAL NUMBER OF WITHDRAWS</div><div class="fs-5 fw-bold">{{ data.withdraw_stats.total|int }}</div></div><i class="fas fa-list-ol fa-2x"></i></div></div>
+                </div>
+                <div class="col-xl-4 col-md-6 mb-4">
+                    <div class="card text-white h-100" style="background-color: #28a745;"><div class="card-body d-flex justify-content-between align-items-center"><div class="me-3"><div class="text-white-75 small">TOTAL NUMBER OF APPROVED WITHDRAWS</div><div class="fs-5 fw-bold">{{ data.withdraw_stats.approved|int }}</div></div><i class="fas fa-check-circle fa-2x"></i></div></div>
+                </div>
+                <div class="col-xl-4 col-md-6 mb-4">
+                    <div class="card text-white h-100" style="background-color: #dc3545;"><div class="card-body d-flex justify-content-between align-items-center"><div class="me-3"><div class="text-white-75 small">TOTAL NUMBER OF REJECTED WITHDRAWS</div><div class="fs-5 fw-bold">{{ data.withdraw_stats.rejected|int }}</div></div><i class="fas fa-times-circle fa-2x"></i></div></div>
+                </div>
+                <div class="col-xl-4 col-md-6 mb-4">
+                    <div class="card text-white h-100" style="background-color: #17a2b8;"><div class="card-body d-flex justify-content-between align-items-center"><div class="me-3"><div class="text-white-75 small">TOTAL NUMBER OF PENDING WITHDRAWS</div><div class="fs-5 fw-bold">{{ data.withdraw_stats.pending|int }}</div></div><i class="fas fa-spinner fa-2x"></i></div></div>
+                </div>
+                <div class="col-xl-4 col-md-6 mb-4">
+                    <div class="card text-white h-100" style="background-color: #212529;"><div class="card-body d-flex justify-content-between align-items-center"><div class="me-3"><div class="text-white-75 small">TOTAL WITHDRAW AMOUNT</div><div class="fs-5 fw-bold">{{ data.settings.general.currency_symbol }}{{ "{:,.2f}".format(data.withdraw_stats.amount) }}</div></div><i class="fas fa-calculator fa-2x"></i></div></div>
+                </div>
+                <div class="col-xl-4 col-md-6 mb-4">
+                    <div class="card text-white h-100" style="background-color: #28a745;"><div class="card-body d-flex justify-content-between align-items-center"><div class="me-3"><div class="text-white-75 small">TOTAL WITHDRAW CHARGE</div><div class="fs-5 fw-bold">{{ data.settings.general.currency_symbol }}{{ "{:,.2f}".format(data.withdraw_stats.charge) }}</div></div><i class="fas fa-dollar-sign fa-2x"></i></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
