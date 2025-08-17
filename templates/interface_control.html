@@ -1,0 +1,75 @@
+{% extends "layout.html" %}
+{% block title %}Interface Control - ANDi Banking{% endblock %}
+{% block content %}
+<div class="container-fluid">
+    <h1 class="h3 mb-4 text-dark"><i class="fas fa-sliders-h me-2"></i>Interface Control</h1>
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <form action="{{ url_for('interface_control') }}" method="POST">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card shadow mb-4">
+                    <div class="card-header"><h6 class="m-0 fw-bold text-dark">Logo & Favicon</h6></div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label">Logo</label>
+                            <input type="file" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Favicon</label>
+                            <input type="file" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card shadow mb-4">
+                    <div class="card-header"><h6 class="m-0 fw-bold text-dark">Breadcrumb & Banner</h6></div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label">Breadcrumb</label>
+                            <input type="file" class="form-control">
+                        </div>
+                         <div class="mb-3">
+                            <label class="form-label">Banner</label>
+                            <input type="file" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card shadow mb-4">
+            <div class="card-header"><h6 class="m-0 fw-bold text-dark">Footer</h6></div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label class="form-label">Footer Text</label>
+                    <textarea class="form-control" name="footer_text" rows="3">{{ data.interface.footer_text }}</textarea>
+                </div>
+            </div>
+        </div>
+        <div class="card shadow mb-4">
+            <div class="card-header"><h6 class="m-0 fw-bold text-dark">Social Icons</h6></div>
+            <div class="card-body">
+                {% for social in data.interface.social_icons %}
+                <div class="input-group mb-3">
+                    <span class="input-group-text"><i class="{{ social.icon }}"></i></span>
+                    <input type="text" class="form-control" value="{{ social.url }}">
+                    <button class="btn btn-outline-danger" type="button">Delete</button>
+                </div>
+                {% endfor %}
+                <button class="btn btn-outline-primary" type="button">Add New Icon</button>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Update Interface</button>
+    </form>
+</div>
+{% endblock %}

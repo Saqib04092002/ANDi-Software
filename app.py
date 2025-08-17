@@ -122,6 +122,18 @@ dummy_data = {
             "app_id": "205856110142667"
         }
     },
+    "languages": [
+        {"name": "English", "code": "en"},
+        {"name": "Spanish", "code": "es"}
+    ],
+    "interface": {
+        "footer_text": "© 2025 ANDi Banking. All Rights Reserved.",
+        "social_icons": [
+            {"icon": "fab fa-facebook-f", "url": "https://facebook.com"},
+            {"icon": "fab fa-twitter", "url": "https://twitter.com"},
+            {"icon": "fab fa-linkedin-in", "url": "https://linkedin.com"}
+        ]
+    },
     "user": {
         "name": "Admin User",
         "email": "admin@andibanking.com",
@@ -349,6 +361,36 @@ def change_password():
         return redirect(url_for('change_password'))
     return render_template('change_password.html', data=dummy_data)
 
+@app.route('/language', methods=['GET', 'POST'])
+@login_required
+def language():
+    if request.method == 'POST':
+        lang_name = request.form.get('lang_name')
+        lang_code = request.form.get('lang_code')
+        if lang_name and lang_code:
+            dummy_data['languages'].append({"name": lang_name, "code": lang_code})
+            flash('Language added successfully!', 'success')
+        return redirect(url_for('language'))
+    return render_template('language.html', data=dummy_data)
+
+@app.route('/language/delete/<int:lang_index>')
+@login_required
+def delete_language(lang_index):
+    if 0 <= lang_index < len(dummy_data['languages']):
+        dummy_data['languages'].pop(lang_index)
+        flash('Language deleted successfully!', 'success')
+    return redirect(url_for('language'))
+
+@app.route('/interface_control', methods=['GET', 'POST'])
+@login_required
+def interface_control():
+    if request.method == 'POST':
+        dummy_data['interface']['footer_text'] = request.form.get('footer_text')
+        # In a real app, you would handle file uploads for logo, etc.
+        flash('Interface settings updated successfully!', 'success')
+        return redirect(url_for('interface_control'))
+    return render_template('interface_control.html', data=dummy_data)
+
 # --- Login/Logout Routes ---
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -371,7 +413,7 @@ def logout():
 @app.route('/<page_name>')
 @login_required
 def other_page(page_name):
-    if page_name in ['branch', 'other_banks', 'payment_gateway', 'latest_news', 'add_news', 'user_management', 'settings', 'profile', 'change_password']:
+    if page_name in ['branch', 'other_banks', 'payment_gateway', 'latest_news', 'add_news', 'user_management', 'settings', 'profile', 'change_password', 'language', 'interface_control']:
         if page_name == 'user_management': return redirect(url_for('users_all'))
         if page_name == 'settings': return redirect(url_for('settings_general'))
         return redirect(url_for(page_name))
